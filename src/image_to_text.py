@@ -11,16 +11,19 @@ output_dir="./output"
 def extract_texts():    
     files = []
     texts = []
+    print("Start text extraction")
     for root, dirs, filenames in os.walk(input_dir):
         for filename in filenames:
+            print(filename)
             im = Image.open(input_dir +"/"+filename)
             text = pytesseract.image_to_string(im, lang='eng')
             files.append(filename)     
-            texts.append(text)            
-    df_file_and_text = pd.DataFrame(data={'file': files, 'text':texts})
-    # save texts plus each image filename in a .csv    
+            texts.append(text)
+    print("End text extraction")                    
+    df_file_and_text = pd.DataFrame(data={'file': files, 'text':texts})    
+    print("Save texts plus each image filename in a .csv")
     df_file_and_text.to_csv(output_dir+'/file_and_text.csv', index=False,header=True)
-    # save texts from all scanned images in another .csv
+    print("Save texts from all scanned images in another .csv")
     df_file_and_text['text'].to_csv(output_dir+'/text_only.txt', index=False,header=False)   
 
 def main():
